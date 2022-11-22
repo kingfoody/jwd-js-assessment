@@ -24,7 +24,39 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
-  });
+ 
+
+
+  let time = document.getElementById('time');
+
+  const date = new Date();
+  
+  console.log(time)
+  
+  function startTimer(duration, element) {
+    var timer = duration, minute, seconds;
+    setInterval(function () {
+      minute = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+  
+      element.textContent = minute + ":" + seconds;
+  
+  
+  
+      if (--timer === -1) {
+        timer = duration;
+        e.preventDefault();
+        e.stopPropagation();
+        element.innerHTML = 'Times Up!' * minute
+        calculateScore()
+      }
+    }, 1000)
+  }
+  
+  
+  
+  startTimer(150, time)
+
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
@@ -44,6 +76,16 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q: 'ي طريق إلى مكان الأكل',
+      o: ['left', 'right', 'up', 'down'],
+      a: 1,
+    },
+    {
+      q: 'which letter makes no sharp',
+      o: ['A', 'D', 'C', 'E'],
+      a: 3,
+    }
   ];
 
   // function to Display the quiz questions and answers from the object
@@ -65,6 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Calculate the score
   const calculateScore = () => {
+    console.log('clickevent')
     let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
@@ -76,15 +119,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (quizItem.a == i) {
           //change background color of li element here
+          liElement.style.backgroundColor = 'green'
         }
 
         if (radioElement.checked) {
           // code for task 1 goes here
+          score++ 
         }
       }
     });
+    let myScore = document.getElementById('score')
+    myScore.innerHTML = score
+    console.log(score)
   };
 
   // call the displayQuiz function
   displayQuiz();
+let btnSubmit = document.querySelector('#btnSubmit')
+btnSubmit.addEventListener('click', calculateScore)
+
 });
+})
